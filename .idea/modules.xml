@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/SoliTala.iml" filepath="$PROJECT_DIR$/SoliTala.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SoliTalaPY/SoliTalaPY.iml" filepath="$PROJECT_DIR$/SoliTalaPY/SoliTalaPY.iml" />
+    </modules>
+  </component>
+</project>
