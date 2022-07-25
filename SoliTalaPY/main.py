@@ -1,8 +1,8 @@
-import copy
-from xmlrpc.client import Boolean
 from datetime import datetime
 
 SZ = 7
+
+VALID_CELLS = []
 
 class SoliTalaBoard:
 
@@ -78,35 +78,43 @@ class SoliTalaBoard:
                         ## left
                         if SoliTalaBoard.valid_cell(i-2, j) and SoliTalaBoard.valid_cell(i-1, j):
                             if self.board[i-2][j] == 1 and self.board[i-1][j] == 1:
-                                bc = copy.deepcopy(self.board)
-                                bc[i-2][j] = 0
-                                bc[i-1][j] = 0
-                                bc[i][j] = 1
-                                ret.append(SoliTalaBoard.board_val(bc))
+                                self.board[i-2][j] = 0
+                                self.board[i-1][j] = 0
+                                self.board[i][j] = 1
+                                ret.append(self.to_val())
+                                self.board[i-2][j] = 1
+                                self.board[i-1][j] = 1
+                                self.board[i][j] = 0
                         ## top
                         if SoliTalaBoard.valid_cell(i, j-2) and SoliTalaBoard.valid_cell(i, j-1):
                             if self.board[i][j-2] == 1 and self.board[i][j-1] == 1:
-                                bc = copy.deepcopy(self.board)
-                                bc[i][j-2] = 0
-                                bc[i][j-1] = 0
-                                bc[i][j] = 1
-                                ret.append(SoliTalaBoard.board_val(bc))
+                                self.board[i][j-2] = 0
+                                self.board[i][j-1] = 0
+                                self.board[i][j] = 1
+                                ret.append(self.to_val())
+                                self.board[i][j-2] = 1
+                                self.board[i][j-1] = 1
+                                self.board[i][j] = 0
                         ## right
                         if SoliTalaBoard.valid_cell(i+2, j) and SoliTalaBoard.valid_cell(i+1, j):
                             if self.board[i+2][j] == 1 and self.board[i+1][j] == 1:
-                                bc = copy.deepcopy(self.board)
-                                bc[i+2][j] = 0
-                                bc[i+1][j] = 0
-                                bc[i][j] = 1
-                                ret.append(SoliTalaBoard.board_val(bc))
+                                self.board[i+2][j] = 0
+                                self.board[i+1][j] = 0
+                                self.board[i][j] = 1
+                                ret.append(self.to_val())
+                                self.board[i+2][j] = 1
+                                self.board[i+1][j] = 1
+                                self.board[i][j] = 0
                         ## bottom
                         if SoliTalaBoard.valid_cell(i, j+2) and SoliTalaBoard.valid_cell(i, j+1):
                             if self.board[i][j+2] == 1 and self.board[i][j+1] == 1:
-                                bc = copy.deepcopy(self.board)
-                                bc[i][j+2] = 0
-                                bc[i][j+1] = 0
-                                bc[i][j] = 1
-                                ret.append(SoliTalaBoard.board_val(bc))
+                                self.board[i][j+2] = 0
+                                self.board[i][j+1] = 0
+                                self.board[i][j] = 1
+                                ret.append(self.to_val())
+                                self.board[i][j+2] = 1
+                                self.board[i][j+1] = 1
+                                self.board[i][j] = 0
         return ret
 
 
