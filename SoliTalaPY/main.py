@@ -2,7 +2,26 @@ from datetime import datetime
 
 SZ = 7
 
+
+def valid_cell(x, y) -> bool:
+    if x < 2:
+        return 2 <= y <= 4
+    elif x <= 4:
+        return 0 <= y <= 6
+    elif x <= 6:
+        return 2 <= y <= 4
+    else:
+        return False
+
+
 VALID_CELLS = []
+
+
+for i in range(SZ):
+    for j in range(SZ):
+        if valid_cell(i, j):
+            VALID_CELLS.append((i, j))
+
 
 class SoliTalaBoard:
 
@@ -23,16 +42,13 @@ class SoliTalaBoard:
             [0, 0, 0, 0, 0, 0, 0]
         ]
         if value > 0:
-            for i in range(SZ):
-                for j in range(SZ):
-                    bit = i*SZ + j
-                    if SoliTalaBoard.valid_cell(i, j):
-                        if ((1 << bit) & value) > 0:
-                            self.board[i][j] = 1
-                        else:
-                            self.board[i][j] = 0
-                    else:
-                        self.board[i][j] = 0
+            for vcell in VALID_CELLS:
+                i, j = vcell
+                bit = i*SZ + j
+                if ((1 << bit) & value) > 0:
+                    self.board[i][j] = 1
+                else:
+                    self.board[i][j] = 0
 
     @classmethod
     def from_board(cls, board: list):
@@ -47,11 +63,11 @@ class SoliTalaBoard:
         :return: int value that represents the board
         """
         val = 0
-        for i in range(SZ):
-            for j in range(SZ):
-                if board[i][j] != 0:
-                    bit = i*SZ + j
-                    val += (1 << bit)
+        for vcell in VALID_CELLS:
+            i, j = vcell
+            if board[i][j] != 0:
+                bit = i*SZ + j
+                val += (1 << bit)
         return val
 
     def to_val(self) -> int:
@@ -70,69 +86,56 @@ class SoliTalaBoard:
         moves with respect to current board
         """
         ret = []
-        for i in range(SZ):
-            for j in range(SZ):
-                if SoliTalaBoard.valid_cell(i, j):
-                    if self.board[i][j] == 0:
-                        # check for valid moves on empty cells
-                        ## left
-                        if SoliTalaBoard.valid_cell(i-2, j) and SoliTalaBoard.valid_cell(i-1, j):
-                            if self.board[i-2][j] == 1 and self.board[i-1][j] == 1:
-                                self.board[i-2][j] = 0
-                                self.board[i-1][j] = 0
-                                self.board[i][j] = 1
-                                ret.append(self.to_val())
-                                self.board[i-2][j] = 1
-                                self.board[i-1][j] = 1
-                                self.board[i][j] = 0
-                        ## top
-                        if SoliTalaBoard.valid_cell(i, j-2) and SoliTalaBoard.valid_cell(i, j-1):
-                            if self.board[i][j-2] == 1 and self.board[i][j-1] == 1:
-                                self.board[i][j-2] = 0
-                                self.board[i][j-1] = 0
-                                self.board[i][j] = 1
-                                ret.append(self.to_val())
-                                self.board[i][j-2] = 1
-                                self.board[i][j-1] = 1
-                                self.board[i][j] = 0
-                        ## right
-                        if SoliTalaBoard.valid_cell(i+2, j) and SoliTalaBoard.valid_cell(i+1, j):
-                            if self.board[i+2][j] == 1 and self.board[i+1][j] == 1:
-                                self.board[i+2][j] = 0
-                                self.board[i+1][j] = 0
-                                self.board[i][j] = 1
-                                ret.append(self.to_val())
-                                self.board[i+2][j] = 1
-                                self.board[i+1][j] = 1
-                                self.board[i][j] = 0
-                        ## bottom
-                        if SoliTalaBoard.valid_cell(i, j+2) and SoliTalaBoard.valid_cell(i, j+1):
-                            if self.board[i][j+2] == 1 and self.board[i][j+1] == 1:
-                                self.board[i][j+2] = 0
-                                self.board[i][j+1] = 0
-                                self.board[i][j] = 1
-                                ret.append(self.to_val())
-                                self.board[i][j+2] = 1
-                                self.board[i][j+1] = 1
-                                self.board[i][j] = 0
+        for vcell in VALID_CELLS:
+            i, j = vcell
+            if self.board[i][j] == 0:
+                # check for valid moves on empty cells
+                ## left
+                if valid_cell(i-2, j) and valid_cell(i-1, j):
+                    if self.board[i-2][j] == 1 and self.board[i-1][j] == 1:
+                        self.board[i-2][j] = 0
+                        self.board[i-1][j] = 0
+                        self.board[i][j] = 1
+                        ret.append(self.to_val())
+                        self.board[i-2][j] = 1
+                        self.board[i-1][j] = 1
+                        self.board[i][j] = 0
+                ## top
+                if valid_cell(i, j-2) and valid_cell(i, j-1):
+                    if self.board[i][j-2] == 1 and self.board[i][j-1] == 1:
+                        self.board[i][j-2] = 0
+                        self.board[i][j-1] = 0
+                        self.board[i][j] = 1
+                        ret.append(self.to_val())
+                        self.board[i][j-2] = 1
+                        self.board[i][j-1] = 1
+                        self.board[i][j] = 0
+                ## right
+                if valid_cell(i+2, j) and valid_cell(i+1, j):
+                    if self.board[i+2][j] == 1 and self.board[i+1][j] == 1:
+                        self.board[i+2][j] = 0
+                        self.board[i+1][j] = 0
+                        self.board[i][j] = 1
+                        ret.append(self.to_val())
+                        self.board[i+2][j] = 1
+                        self.board[i+1][j] = 1
+                        self.board[i][j] = 0
+                ## bottom
+                if valid_cell(i, j+2) and valid_cell(i, j+1):
+                    if self.board[i][j+2] == 1 and self.board[i][j+1] == 1:
+                        self.board[i][j+2] = 0
+                        self.board[i][j+1] = 0
+                        self.board[i][j] = 1
+                        ret.append(self.to_val())
+                        self.board[i][j+2] = 1
+                        self.board[i][j+1] = 1
+                        self.board[i][j] = 0
         return ret
-
-
-    @staticmethod
-    def valid_cell(x, y) -> bool:
-        if x < 2:
-            return 2 <= y <= 4
-        elif x <= 4:
-            return 0 <= y <= 6
-        elif x <= 6:
-            return 2 <= y <= 4
-        else:
-            return False
 
     def print_board(self):
         for i in range(SZ):
             for j in range(SZ):
-                if SoliTalaBoard.valid_cell(i, j):
+                if valid_cell(i, j):
                     if self.board[i][j] == 1:
                         print("X", end=' ')
                     else:
