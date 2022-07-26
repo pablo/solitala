@@ -1,3 +1,4 @@
+import sys
 from datetime import datetime
 
 SZ = 7
@@ -91,7 +92,7 @@ class SoliTalaBoard:
             if self.board[i][j] == 0:
                 # check for valid moves on empty cells
                 ## left
-                if valid_cell(i-2, j) and valid_cell(i-1, j):
+                try:
                     if self.board[i-2][j] == 1 and self.board[i-1][j] == 1:
                         self.board[i-2][j] = 0
                         self.board[i-1][j] = 0
@@ -100,8 +101,10 @@ class SoliTalaBoard:
                         self.board[i-2][j] = 1
                         self.board[i-1][j] = 1
                         self.board[i][j] = 0
+                except IndexError:
+                    pass
                 ## top
-                if valid_cell(i, j-2) and valid_cell(i, j-1):
+                try:
                     if self.board[i][j-2] == 1 and self.board[i][j-1] == 1:
                         self.board[i][j-2] = 0
                         self.board[i][j-1] = 0
@@ -110,8 +113,10 @@ class SoliTalaBoard:
                         self.board[i][j-2] = 1
                         self.board[i][j-1] = 1
                         self.board[i][j] = 0
+                except IndexError:
+                    pass
                 ## right
-                if valid_cell(i+2, j) and valid_cell(i+1, j):
+                try:
                     if self.board[i+2][j] == 1 and self.board[i+1][j] == 1:
                         self.board[i+2][j] = 0
                         self.board[i+1][j] = 0
@@ -120,8 +125,10 @@ class SoliTalaBoard:
                         self.board[i+2][j] = 1
                         self.board[i+1][j] = 1
                         self.board[i][j] = 0
+                except IndexError:
+                    pass
                 ## bottom
-                if valid_cell(i, j+2) and valid_cell(i, j+1):
+                try:
                     if self.board[i][j+2] == 1 and self.board[i][j+1] == 1:
                         self.board[i][j+2] = 0
                         self.board[i][j+1] = 0
@@ -130,6 +137,8 @@ class SoliTalaBoard:
                         self.board[i][j+2] = 1
                         self.board[i][j+1] = 1
                         self.board[i][j] = 0
+                except IndexError:
+                    pass
         return ret
 
     def print_board(self):
@@ -180,6 +189,7 @@ WINNING_BOARD_VAL = WINNING_BOARD.to_val()
 STARTING_BOARD = INITIAL_BOARD
 
 iter = 0
+solutions = 0
 
 class SoliTalaSolver:
 
@@ -190,22 +200,20 @@ class SoliTalaSolver:
         self.solve(STARTING_BOARD.valid_moves(), [STARTING_BOARD,], 0)
 
     def solve(self, valid_moves: list = None, boards: list = None, depth: int = 0):
-        global iter
+        global iter, solutions
         iter += 1
-        if iter%10000 == 0:
-            print(f"{datetime.now()} -> Current depth {depth} on iter {iter}")
-        if iter > 100000:
-            print("BYE for now!")
-            return
+        if iter%100000 == 0:
+            print(f"{datetime.now()} -> Current depth {depth} on iter {iter} - solutions {solutions}")
         for board_val in valid_moves:
             current_board = SoliTalaBoard(board_val)
             boards.append(current_board)
             if board_val == WINNING_BOARD_VAL:
-                print("I FOUND IT!!!!")
+                solutions += 1
+                print(f"I FOUND IT!!!! SOLUTION #{solutions}")
                 for board in boards:
                     board.print_board()
                     print("==============")
-                return True
+                sys.exit(0)
             else:
                 self.solve(current_board.valid_moves(), boards, depth+1)
                 boards.pop()

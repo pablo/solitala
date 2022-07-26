@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SoliTala.iml" filepath="$PROJECT_DIR$/SoliTala.iml" />
       <module fileurl="file://$PROJECT_DIR$/SoliTalaPY/SoliTalaPY.iml" filepath="$PROJECT_DIR$/SoliTalaPY/SoliTalaPY.iml" />
+      <module fileurl="file://$PROJECT_DIR$/solitalaviewer.iml" filepath="$PROJECT_DIR$/solitalaviewer.iml" />
     </modules>
   </component>
 </project>
