@@ -1,9 +1,10 @@
+import './Board.css'
 import React from "react";
 
 class Cell extends React.Component {
-    render() {
+    render(props) {
         return (
-            <td>X</td>
+            <td class="cell">{this.props.value}</td>
         );
     }
 }
@@ -11,7 +12,7 @@ class Cell extends React.Component {
 class NoCell extends React.Component {
     render() {
         return (
-            <td>D</td>
+            <td class="nocell"></td>
         );
     }
 }
