@@ -92,53 +92,41 @@ class SoliTalaBoard:
             if self.board[i][j] == 0:
                 # check for valid moves on empty cells
                 ## left
-                try:
-                    if self.board[i-2][j] == 1 and self.board[i-1][j] == 1:
-                        self.board[i-2][j] = 0
-                        self.board[i-1][j] = 0
-                        self.board[i][j] = 1
-                        ret.append(self.to_val())
-                        self.board[i-2][j] = 1
-                        self.board[i-1][j] = 1
-                        self.board[i][j] = 0
-                except IndexError:
-                    pass
+                if i-2 > 0 and self.board[i-2][j] == 1 and self.board[i-1][j] == 1:
+                    self.board[i-2][j] = 0
+                    self.board[i-1][j] = 0
+                    self.board[i][j] = 1
+                    ret.append(self.to_val())
+                    self.board[i-2][j] = 1
+                    self.board[i-1][j] = 1
+                    self.board[i][j] = 0
                 ## top
-                try:
-                    if self.board[i][j-2] == 1 and self.board[i][j-1] == 1:
-                        self.board[i][j-2] = 0
-                        self.board[i][j-1] = 0
-                        self.board[i][j] = 1
-                        ret.append(self.to_val())
-                        self.board[i][j-2] = 1
-                        self.board[i][j-1] = 1
-                        self.board[i][j] = 0
-                except IndexError:
-                    pass
+                if j-2 >= 0 and self.board[i][j-2] == 1 and self.board[i][j-1] == 1:
+                    self.board[i][j-2] = 0
+                    self.board[i][j-1] = 0
+                    self.board[i][j] = 1
+                    ret.append(self.to_val())
+                    self.board[i][j-2] = 1
+                    self.board[i][j-1] = 1
+                    self.board[i][j] = 0
                 ## right
-                try:
-                    if self.board[i+2][j] == 1 and self.board[i+1][j] == 1:
-                        self.board[i+2][j] = 0
-                        self.board[i+1][j] = 0
-                        self.board[i][j] = 1
-                        ret.append(self.to_val())
-                        self.board[i+2][j] = 1
-                        self.board[i+1][j] = 1
-                        self.board[i][j] = 0
-                except IndexError:
-                    pass
+                if i+2 < SZ and self.board[i+2][j] == 1 and self.board[i+1][j] == 1:
+                    self.board[i+2][j] = 0
+                    self.board[i+1][j] = 0
+                    self.board[i][j] = 1
+                    ret.append(self.to_val())
+                    self.board[i+2][j] = 1
+                    self.board[i+1][j] = 1
+                    self.board[i][j] = 0
                 ## bottom
-                try:
-                    if self.board[i][j+2] == 1 and self.board[i][j+1] == 1:
-                        self.board[i][j+2] = 0
-                        self.board[i][j+1] = 0
-                        self.board[i][j] = 1
-                        ret.append(self.to_val())
-                        self.board[i][j+2] = 1
-                        self.board[i][j+1] = 1
-                        self.board[i][j] = 0
-                except IndexError:
-                    pass
+                if j+2 < SZ and self.board[i][j+2] == 1 and self.board[i][j+1] == 1:
+                    self.board[i][j+2] = 0
+                    self.board[i][j+1] = 0
+                    self.board[i][j] = 1
+                    ret.append(self.to_val())
+                    self.board[i][j+2] = 1
+                    self.board[i][j+1] = 1
+                    self.board[i][j] = 0
         return ret
 
     def print_board(self):
